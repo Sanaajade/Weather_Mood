@@ -1,74 +1,19 @@
-<style>
-  html {
-    background-image: url("An Advice a Day... (1).jpg");
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  
-  button {
-    background-color: rgb(255, 182, 205);
-    padding: 20px;
-    border-radius: 20px;
-    font-size: 25px;
-    font-family: 'sans-serif';
-    width: 20vw;
-    position: center;
-    margin: 45vh;
-    color: black;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: rgb(255, 105, 134);
-  }
-  
-  #advice {
-    margin-top: 20px;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    display: none;  
-  }
-  
-  #advice.show {
-   display: block;
-   opacity: 1;
-  }
-  
-  #container {
-    text-align: center;
-    margin-top: 40vh;
-    color: white;
-    font-size: 20px;
-    }
-</style>
-<body>
-  <div id="container">
-  <button id="getAdvice">get advice</button>
-  <div id="advice"></div>
-  </div>
-</body>
-
-
-<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js?v=1">
-</script>
-
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
 <script>
-  /*global nn*/
-  const adviceDiv = nn.get('#advice');
-  const button = nn.get('#getAdvice');
-  
-  async function getAdvice () {
-    const res = await fetch('https://api.adviceslip.com/advice');
-    const data = await res.json();
-    nn.set(adviceDiv, `"${data.slip.advice}"`);
-    nn.get('#advice').style.display = 'block';
-    nn.get('#advice').classList.add('show');
-    console.log('Button clicked');
-    console.log('Fetching from API...');
-    console.log(data);
-  }
-  
-  nn.on(button, 'click', getAdvice);
+/* global nn */
+
+async function displayDog () {
+  const res = await fetch('https://dog.ceo/api/breeds/image/random')
+  const json = await res.json()
+  console.log(json) // vie data in the console
+
+  nn.create('img').set({
+    alt: 'an image of a random dog',
+    src: json.message // the URL to a dog image
+  }).addTo('body')
+}
+
+nn.on('load', displayDog)
+
 </script>
+
