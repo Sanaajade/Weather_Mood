@@ -1,22 +1,74 @@
 <style>
   html {
-    background-image: src(An Advice a Day....jpg);
+    background-image: url("An Advice a Day... (1).jpg");
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
   }
+  
+  button {
+    background-color: rgb(255, 182, 205);
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 25px;
+    font-family: 'sans-serif';
+    width: 20vw;
+    position: center;
+    margin: 45vh;
+    color: black;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: rgb(255, 105, 134);
+  }
+  
+  #advice {
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: none;  
+  }
+  
+  #advice.show {
+   display: block;
+   opacity: 1;
+  }
+  
+  #container {
+    text-align: center;
+    margin-top: 40vh;
+    color: white;
+    font-size: 20px;
+    }
 </style>
-<script>
-src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js?v=1"
+<body>
+  <div id="container">
+  <button id="getAdvice">get advice</button>
+  <div id="advice"></div>
+  </div>
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js?v=1">
 </script>
 
 <script>
-/*global nn */
-  async function getData () {
-    const url = 
-    'https://api.adviceslip.com/advice'
-    const res = await fetch(url)
-    const json = await res.json()
+  /*global nn*/
+  const adviceDiv = nn.get('#advice');
+  const button = nn.get('#getAdvice');
+  
+  async function getAdvice () {
+    const res = await fetch('https://api.adviceslip.com/advice');
+    const data = await res.json();
+    nn.set(adviceDiv, `"${data.slip.advice}"`);
+    nn.get('#advice').style.display = 'block';
+    nn.get('#advice').classList.add('show');
+    console.log('Button clicked');
+    console.log('Fetching from API...');
+    console.log(data);
   }
+  
+  nn.on(button, 'click', getAdvice);
 </script>
